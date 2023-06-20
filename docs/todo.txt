@@ -1,0 +1,11 @@
+- type de task (design reviews, code reviews, testing reviews, code,  test, design, story technique, story fonctionnelle, correction de bugs, dette technique)
+
+*** fournir une explication de chaque type de task
+
+- Dans un sprint, on réalise des stories. Un sprint a une date de début, une date de fin et un objectif.
+
+- Un obstacle bloque ou ralentit le bon déroulement du sprint.
+
+- Une story est constituée d'un ensemmble de tâches à faire
+
+- Une tâche peut être réalisée par une ou  plusieurs personnes
