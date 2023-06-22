@@ -5,7 +5,25 @@
 - Dans un sprint, on réalise des stories. Un sprint a une date de début, une date de fin et un objectif.
 
 - Un obstacle bloque ou ralentit le bon déroulement du sprint.
+Un obstacle est identifié au cours de l’exécution du sprint, dès qu’il apparaît. Il est décrit
+par son état (identifié, en cours de résolution, résolu), son impact (défini par les tâches qui
+sont bloquées ou freinées) et la date de sa découverte.
+Les obstacles sont visibles dans le tableau des obstacles, à côté du tableau du sprint
+
+Exemple: Sébastien, développeur de l’équipe Peetic, n’arrive pas à commiter ses
+modifications sur Git ; Laurent, l’expert cartographie, s’est cassé le bras au ski
+pendant le week-end.
+
+
 
 - Une story est constituée d'un ensemmble de tâches à faire
 
 - Une tâche peut être réalisée par une ou  plusieurs personnes
+
+
+Indicateur de sprint
+
+Le burndown chart de sprint est un graphique, actualisé tous les jours, montrant la
+tendance du reste à faire. On peut choisir une de ces variantes :
+le burndown en tâches,
+le burndown en stories.

@@ -1,22 +1,35 @@
-class Backlog{
-    static list = {};
+class Backlog{// singleton pattern
+    #list = {};
 
-    static add(id, item){
+    add(id, item){
         if (id)
-            Backlog.list[id] = item;
+            this.#list[id] = item;
     }
 
-    static remove(id){
-        delete Backlog.list[id];
+    remove(id){
+        delete this.#list[id];
     }
 
-    static find(id){
-        return Backlog.list[id] ? Backlog.list[id] : null;
+    find(id){
+        return this.#list[id] ? this.#list[id] : null;
     }
 
-    static forEach(callback, data){
-        Object.keys(Backlog.list).map(id =>{
-            callback(Backlog.list[id], data);
+    forEach(callback, data){
+        Object.keys(this.#list).map(id =>{
+            callback(this.#list[id], data);
         });
+    }
+
+    findItemsByType(type){
+        let result = [];
+        Object.keys(this.#list).map((id)=>{
+            if (this.#list[id].type == type)
+                result.push(this.#list[id]);
+        });
+        return result;
+    }
+
+    get list(){
+        return this.#list;
     }
 }

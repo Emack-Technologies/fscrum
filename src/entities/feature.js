@@ -1,5 +1,5 @@
-class Task{
+class Feature{
     constructor(){
-
+        
     }
 }

@@ -1,65 +1,112 @@
+const {test} = QUnit;
+
 QUnit.module("Backlog");
 
 
-QUnit.test("add nothing when no id", assert=>{
-    Backlog.add();
+test("get list", assert=>{
+    var bk = new Backlog();
 
-    assert.equal(Object.keys(Backlog.list).length, 0, 'list should be empty');
+    assert.equal(Object.keys(bk.list).length, 0, 'empty list');
 });
 
-QUnit.test("add an item to the backlog", assert=>{
+test("create a backlog with an empty list of story", assert=>{
+    var bk = new Backlog();
+    assert.equal(Object.keys(bk.list).length, 0, 'empty list');
+});
+
+test("add nothing when no id", assert=>{
+    var bk = new Backlog();
+    bk.add();
+
+    assert.equal(Object.keys(bk.list).length, 0, 'list should be empty');
+});
+
+test("add an item to the backlog", assert=>{
+    var bk = new Backlog();
     var obj = {
         id: "gezuygduvdevevdetye",
         type: "sprint"
     };
 
-    assert.equal(Object.keys(Backlog.list).length, 0, "list should be empty");
+    assert.equal(Object.keys(bk.list).length, 0, "list should be empty");
 
-    Backlog.add(obj.id, obj);
+    bk.add(obj.id, obj);
     
-    assert.equal(Object.keys(Backlog.list).length, 1, "list should have one item");
-    assert.equal(Backlog.list[obj.id], obj, 'item added');
+    assert.equal(Object.keys(bk.list).length, 1, "list should have one item");
+    assert.equal(bk.list[obj.id], obj, 'item added');
 
-    Backlog.list = {};
 });
 
-QUnit.test("remove an item from the backlog", assert=>{
+test("remove an item from the backlog", assert=>{
+    var bk = new Backlog();
     var obj = {
         id: "gezuygduvdevevdetye",
         type: "sprint"
     };
 
-    assert.equal(Object.keys(Backlog.list).length, 0, "list should be empty");
+    assert.equal(Object.keys(bk.list).length, 0, "list should be empty");
 
-    Backlog.add(obj.id, obj);
+    bk.add(obj.id, obj);
     
-    assert.equal(Object.keys(Backlog.list).length, 1, "list should have one item");
+    assert.equal(Object.keys(bk.list).length, 1, "list should have one item");
 
-    Backlog.remove(obj.id);
+    bk.remove(obj.id);
 
-    assert.equal(Object.keys(Backlog.list).length, 0, "list should be empty");
+    assert.equal(Object.keys(bk.list).length, 0, "list should be empty");
 });
 
-QUnit.test("find an item by its id", assert=>{
+test("find an item by its id", assert=>{
+    var bk = new Backlog();
     var obj = {
         id: "gezuygduvdevevdetye",
         type: "sprint"
     };
 
-    Backlog.add(obj.id, obj);
+    bk.add(obj.id, obj);
 
-    var item = Backlog.find(obj.id);
+    var item = bk.find(obj.id);
 
     assert.equal(item.id, obj.id, "item found");
 });
 
-QUnit.test("find return null when item is not found", assert =>{
-    var item = Backlog.find('nothing');
+test("find all items with the same type", assert=>{
+    var bk = new Backlog();
+    var obj1 = {
+        id: "gezuygduvdevevdetye",
+        type: "sprint"
+    };
+    var obj2 = {
+        id: "gezuygduezeezezevdetye",
+        type: "sprint"
+    };
+    var obj3 = {
+        id: "gezucddddvdevevdetye",
+        type: "feature"
+    };
+
+    bk.add(obj1.id, obj1);
+    bk.add(obj2.id, obj2);
+    bk.add(obj3.id, obj3);
+
+    var items = bk.findItemsByType("sprint");
+
+    assert.equal(items.length, 2, "items founded");
+    items.map((item)=>{
+        assert.equal(item.type, 'sprint', 'item is a sprint');
+    });
+});
+
+test("find return null when item is not found", assert =>{
+    var bk = new Backlog();
+
+    var item = bk.find('nothing');
 
     assert.equal(item, null, 'component not found');
 });
 
-QUnit.test("test forEach function", assert=>{
+test("test forEach function", assert=>{
+    var bk = new Backlog();
+
     var obj1 = {
         id: "gezuygduvdevevdetye",
         type: "sprint"
@@ -70,13 +117,11 @@ QUnit.test("test forEach function", assert=>{
         type: "sprint"
     };
 
-    Backlog.add(obj1.id, obj1);
-    Backlog.add(obj2.id, obj2);
+    bk.add(obj1.id, obj1);
+    bk.add(obj2.id, obj2);
 
-    console.log(Backlog.list);
     var count = { count: 0};
-    Backlog.forEach( (c, u)=>{u.count++}, count);
+    bk.forEach( (c, u)=>{u.count++}, count);
     assert.equal(count.count, 2, "count value");
-
-    Backlog.list = {};
+    bk.list = {};
 });
