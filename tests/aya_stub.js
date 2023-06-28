@@ -119,9 +119,23 @@ var aya = {
                      Obj[key] = value;
                    }
                 },
+                children: [],
                 draw(){
                 },
                 redraw(){
+                },
+                removeChildren(){},
+                addChild: (child, translate, rotate, drawing) => {
+                  if (translate){
+                     child.offsetX = translate.x;
+                     child.offsetY = translate.y;
+                  }
+                  if (rotate){
+                     child.centerX = rotate.centerX;
+                     child.centerY = rotate.centerY;
+                     child.angle = rotate.angle;
+                  }
+                  Obj.children.push({child});
                 },
                 setStyles: (o) => {
                   Object.keys(o).map((key ,index) => {
@@ -137,7 +151,7 @@ var aya = {
  
              var Obj = {
                 uuid: uuid || id,
-                events: [],
+                events: {},
                 x: x!=undefined ? x : null,
                 y: y!=undefined ? y : null,
                 width: width ? width : null,
@@ -147,16 +161,6 @@ var aya = {
                 offsetX: "",
                 offsetY: "",
                 vertex: [
-                   {
-                      x: 0,
-                      y: 0,
-                      r: 5,
-                      draw: ()=>{},
-                      redraw: ()=>{},
-                      c_svg: null,
-                      ref: id,
-                      uuid: null
-                   },
                    {
                       x: 0,
                       y: 0,
@@ -240,16 +244,6 @@ var aya = {
                       ref: id,
                       uuid: null
                    },
-                   {
-                      x: 0,
-                      y: 0,
-                      r: 5,
-                      draw: ()=>{},
-                      redraw: ()=>{},
-                      c_svg: null,
-                      ref: id,
-                      uuid: null
-                   },
                 ],
                 draw(){
                    Obj.shape.c_points.map((pt) => {
@@ -293,10 +287,14 @@ var aya = {
                 removeFromDOM(){
                    Obj.c_svg = "";
                 },
+                remove(){},
                 setStyles: (o) => {
                    Object.keys(o).map((key ,index) => {
                       Obj.c_svg.setAttribute(key, o[key]);
                    });
+                },
+                addEvent: (e, callback) => {
+                  Obj.events[e] = callback;
                 }
              };
              return Obj;

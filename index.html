@@ -15,15 +15,20 @@
 
    <script>
       var aya = aya.init();
-      console.log(aya);
-    //   aya.config.text.textanchor = "start";
-    //   aya.config.text.startoffset = "0%";
+      aya.config.text.textanchor = "start";
+      aya.config.text.startoffset = "0%";
       document.body.append(aya.svg);
    </script>
-   <script src="src/entities/tasks.js"></script>
+   <script src="constants.js"></script>
+   <script src="src/entities/story.js"></script>
    <script>
     aya.grid(aya.svg);
-    var rec = aya.rectangle(100, 100, 100, 100);
+    var st = new Story({title: 'titre', id: 1, startDate: Date.now(), endDate: Date.now(), type: 'test'});
+   //  var rec1 = aya.rectangle(100, 100, 100, 100, false);
+   //  var rec2 = aya.rectangle(100, 100, 100, 100);
+   //  rec2.addChild(rec1, {x:0, y:0}, {});
+   //  var txt = aya.text(rec1.x, rec1.y + rec1.height / 2, 'texte', 0, rec1.x + rec1.width, rec1.y, false);
+   //  rec1.addChild(txt, {x:0, y:0}, {x:rec2.x, y:rec2.y, angle:45});
    // write your code here      
    </script>
 </body>
