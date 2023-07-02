@@ -22,10 +22,15 @@
    <script src="constants.js"></script>
    <script src="src/entities/story.js"></script>
    <script>
-    aya.grid(aya.svg);
-    var st = new Story({title: 'titre', id: 1, startDate: Date.now(), endDate: Date.now(), type: 'test'});
-   //  var rec1 = aya.rectangle(100, 100, 100, 100, false);
-   //  var rec2 = aya.rectangle(100, 100, 100, 100);
+      aya.grid(aya.svg);
+      var story1 = new Story({title: 'titre', startDate: new Date('10-01-2023'), endDate: new Date('12-01-2023'), type: 'test'});
+      var story2 = new Story({title: 'titre', startDate: new Date('13-01-2023'), endDate: new Date('14-01-2023'), type: 'test'});
+      var story3 = new Story({title: 'titre', startDate: new Date('15-01-2023'), endDate: new Date('16-01-2023'), type: 'test'});
+      story1.dependsOn(story2);
+      story1.dependsOn(story3);
+    //  var rec1 = aya.rectangle(100, 100, 100, 100);
+   //  var rec2 = aya.rectangle(400, 100, 100, 100);
+   //  var link = aya.link(rec1.uuid, rec2.uuid, {end_start: null, end_dest: 'triangle'});
    //  rec2.addChild(rec1, {x:0, y:0}, {});
    //  var txt = aya.text(rec1.x, rec1.y + rec1.height / 2, 'texte', 0, rec1.x + rec1.width, rec1.y, false);
    //  rec1.addChild(txt, {x:0, y:0}, {x:rec2.x, y:rec2.y, angle:45});

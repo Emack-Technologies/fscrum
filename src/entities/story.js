@@ -123,6 +123,13 @@ class Story{
     set endDate(value){
         this.#endDate = value;
     };
+
+    dependsOn(story1, obj = {}){
+        if (this.#startDate.getTime() <= story1.endDate.getTime())
+            throw new Error('Dates should be differents');
+        story1.dependances.push(this.#id);
+        obj.shape = aya.link(story1.shape.uuid, this.shape.uuid, {end_start: null, end_dest: 'triangle'});
+    };
 }
 
 var mouseovercb = (story) => {

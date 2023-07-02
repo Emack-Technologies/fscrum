@@ -263,7 +263,7 @@ test('add mouseleave event on the Story', assert => {
     var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     var ev = st.shape.events['mouseleave'];
-    assert.equal(typeof ev, 'function', 'moget lines coordinatesuseleave defined');
+    assert.equal(typeof ev, 'function', 'mouseleave defined');
 });
 
 test('mouseleavecb - delete box', assert => {
@@ -272,4 +272,72 @@ test('mouseleavecb - delete box', assert => {
     var m = mouseovercb(st);
     mouseleavecb(st);
     assert.equal(st.shape.children.length, 1, 'remove child shape');
+});
+
+
+/**
+ * Tests related to dependsOn method
+ */
+test('dependsOn()- throws an exception when dates are not correct', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('12-01-2023')};
+    var story2 = new Story(props);
+    assert.throws(function () {
+        story2.dependsOn(story1);
+    }, 'Dates should be correct');
+});
+
+test('dependsOn()- one story depends on another one', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    assert.equal(story1.dependances.length, 0, 'story1 has any dependance');
+    story2.dependsOn(story1);
+    assert.ok(story1.endDate.getTime(), story2.startDate.getTime(), 'endDate of story1 comes before startDate of story2');
+    assert.equal(story1.dependances.length, 1, 'story1 has one dependance');
+    assert.equal(story1.dependances[0], story2.id, 'story1 has story2 as dependance');
+});
+
+test('dependsOn() - Draw the edge between nodes as expected', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    var obj = {};
+    story2.dependsOn(story1, obj);
+    assert.equal(obj.shape.type, 'link', 'type is a link');
+});
+
+test('dependsOn() - one story has multiple successor stories', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('14-01-2023')};
+    var story3 = new Story(props);
+    assert.equal(story1.dependances.length, 0, 'story1 has any dependance');
+    story2.dependsOn(story1);
+    story3.dependsOn(story1);
+    assert.ok(story1.endDate.getTime(), story2.startDate.getTime(), 'endDate of story1 comes before startDate of story2');
+    assert.ok(story1.endDate.getTime(), story3.startDate.getTime(), 'endDate of story1 comes before startDate of story3');
+    assert.equal(story1.dependances.length, 2, 'story1 has one dependance');
+    assert.equal(story1.dependances[0], story2.id, 'story1 has story2 as dependance');
+    assert.equal(story1.dependances[1], story3.id, 'story1 has story3 as dependance');
+});
+
+test('dependsOn() - one story has multiple predecessor stories', assert => {
+    var props = {title: 'titre', type: 'code', endDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    var props = {title: 'titre', type: 'code', endDate: new Date('14-01-2023')};
+    var story3 = new Story(props);
+    var props = {title: 'titre', type: 'test', startDate: new Date('16-01-2023')};
+    var story1 = new Story(props);
+    story1.dependsOn(story2);
+    story1.dependsOn(story3);
+    assert.equal(story2.dependances.length, 1, 'story2 has a dependance');
+    assert.equal(story3.dependances.length, 1, 'story3 has a dependance');
+    assert.equal(story2.dependances[0], story1.id, 'story2 has story1 as dependance');
+    assert.equal(story3.dependances[0], story1.id, 'story3 has story1 as dependance');
 });
