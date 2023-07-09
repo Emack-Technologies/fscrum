@@ -17,8 +17,8 @@ class Sprint{
     #stories = {};
     #status = "";
     #name = "undefined";
-    #startDate = "null";
-    #endDate = "null";
+    #startDate = new Date("2023-05-23");
+    #endDate = new Date("2034-05-23");
     #shape = "undefined";
     #backlog = {};
     #type = "sprint";
