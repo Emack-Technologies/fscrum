@@ -17,13 +17,25 @@ test('Throws an exception when title attribute is not a string', assert => {
     }, 'Title parameter should be provided');
 });
 
+test('Throws an exception when there is no type', assert=>{
+    assert.throws(()=>{
+        new Story({title: 'titre'});
+    }, 'Type is not precise');
+});
+
+test('Throws an exception when type is not correct', assert=>{
+    assert.throws(()=>{
+        new Story({title: 'titre', type: 'type'});
+    }, 'Type is not correct');
+});
+
 
 /**
  * Tests related to story creation
  */
 
 test('Set attributes by default when they are not precised', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.equal(typeof st.id, "string", 'id is a string');
     assert.equal(st.startDate, props.startDate, 'Set startDate');
@@ -31,7 +43,7 @@ test('Set attributes by default when they are not precised', assert => {
 });
 
 test('Story creation', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.equal(typeof st.id, "string", 'id is a string');
     assert.equal(st.title, 'titre', 'Set title');
@@ -42,7 +54,7 @@ test('Story creation', assert => {
 });
 
 test('Story creation by precising other parameters', assert => {
-    var props = {title: 'titre',  startDate: new Date("2023-04-12"), endDate: new Date("2023-04-12") };
+    var props = {title: 'titre',  startDate: new Date("2023-04-12"), endDate: new Date("2023-04-12"), type: 'test' };
     var st = new Story(props);
     assert.equal(typeof st.id, "string", 'id is a string');
     assert.equal(st.title, 'titre', 'Set title');
@@ -53,7 +65,7 @@ test('Story creation by precising other parameters', assert => {
 });
 
 test('Visual representation of a Story', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.equal(st.shape.type, 'rectangle', 'Shape type is a rectangle');
     assert.equal(st.shape.width, R_WIDTH, 'Set shape width');
@@ -70,7 +82,7 @@ test('Visual representation of a Story', assert => {
  * Tests related to the adding of mouseover on the shape
  */
 test('add mouseover event on the Story', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     var ev = st.shape.events['mouseover'];
     assert.equal(typeof ev, 'function', 'mouseover defined');
@@ -81,45 +93,45 @@ test('add mouseover event on the Story', assert => {
  * Tests related to getters
  */
 test('get story id', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.ok(st.id, 'get story id');
 });
 
 test('get status', assert=>{
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
 
     assert.equal(st.status, 'in_progress', "get status");
 });
 
 test('get type', assert=>{
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
 
-    assert.equal(st.type, 'epique', "get type");
+    assert.equal(st.type, 'test', "get type");
 });
 
 test('get story title', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.equal(st.title, 'titre', 'get story title');
 });
 
 test('get story startDate', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.equal(st.startDate, props.startDate, 'get story start date');
 });
 
 test('get story endDate', assert => {
-    var props = {title: 'titre' };
+    var props = {title: 'titre', type: 'test' };
     var st = new Story(props);
     assert.equal(st.endDate, props.endDate, 'get story end date');
 });
 
 test('get story dependances', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     assert.equal(st.dependances.length, 0, 'story dependances is 0');
 });
@@ -130,7 +142,7 @@ test('get story dependances', assert => {
  */
 
 test('Set status to story - throws an exception when status value is not correct', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
 
     assert.throws(()=>{
@@ -139,44 +151,28 @@ test('Set status to story - throws an exception when status value is not correct
 });
 
 test('set status of a story', assert=>{
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     st.status = "done";
     assert.equal(st.status, "done", 'set status value');
 });
 
-test('set type - throws an exception when type is not correct', assert=>{
-    var props = {title: 'titre'};
-    var st = new Story(props);
-    assert.throws(()=>{
-        st.type = "anything exception the right one";
-    }, 'type is not correct');
-});
-
-
-test('set type', assert=>{
-    var props = {title: 'titre'};
-    var st = new Story(props);
-    st.type = "test";
-    assert.equal(st.type, "test", 'set status value');
-});
-
 test('set story title', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     st.title = 'title';
     assert.notEqual(st.title, props.title, 'set story title');
 });
 
 test('set story startDate', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     st.startDate = new Date("2022-04-23");
     assert.notEqual(st.startDate, props.startDate, 'set story startDate');
 });
 
 test('set story endDate', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     st.endDate = new Date("2092-04-23");
     assert.notEqual(st.endDate, props.endDate, 'set story endDate');
@@ -189,14 +185,14 @@ test('set story endDate', assert => {
  */
 
 test('mouseovercb - box creation', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     var m = mouseovercb(st);
     assert.equal(m.box.type, 'rectangle', 'type is rectangle');
     assert.equal(m.box.width, B_WIDTH, 'Set box width');
     assert.equal(m.box.height, B_HEIGHT, 'Set box height');
     assert.equal(m.box.x, st.shape.x, 'Set x-axis value');
-    assert.equal(m.box.y, st.shape.y + st.shape.height, 'Set y-axis value');
+    assert.equal(m.box.y, st.shape.y + st.shape.height + 40, 'Set y-axis value');
     assert.equal(m.box['fill'], B_FILL, 'Set box color fill');
     assert.equal(m.box['stroke'], B_STROKE, 'Set box color stroke');
     assert.equal(m.box['strokewidth'], B_STROKEWIDTH, 'Set box color stroke width');
@@ -204,7 +200,7 @@ test('mouseovercb - box creation', assert => {
 
 
 test('mouseovercb - add box to shape', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     var m = mouseovercb(st);
     assert.equal(st.shape.children.length, 1, 'there is a child shape');
@@ -212,7 +208,7 @@ test('mouseovercb - add box to shape', assert => {
 });
 
 test('mouseovercb - add separator lines to the box', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
 
     var m = mouseovercb(st);
@@ -228,7 +224,7 @@ test('mouseovercb - add separator lines to the box', assert => {
 });
 
 test('mouseovercb - create texts between lines', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
 
     var m = mouseovercb(st);
@@ -264,16 +260,84 @@ test('mouseovercb - create texts between lines', assert => {
  * Tests related to mouseleave
  */
 test('add mouseleave event on the Story', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     var ev = st.shape.events['mouseleave'];
-    assert.equal(typeof ev, 'function', 'moget lines coordinatesuseleave defined');
+    assert.equal(typeof ev, 'function', 'mouseleave defined');
 });
 
 test('mouseleavecb - delete box', assert => {
-    var props = {title: 'titre'};
+    var props = {title: 'titre', type: 'test'};
     var st = new Story(props);
     var m = mouseovercb(st);
-    mouseleavecb(st.shape);
-    assert.equal(st.shape.children.length, 0, 'remove child shape');
+    mouseleavecb(st);
+    assert.equal(st.shape.children.length, 1, 'remove child shape');
+});
+
+
+/**
+ * Tests related to dependsOn method
+ */
+test('dependsOn()- throws an exception when dates are not correct', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('12-01-2023')};
+    var story2 = new Story(props);
+    assert.throws(function () {
+        story2.dependsOn(story1);
+    }, 'Dates should be correct');
+});
+
+test('dependsOn()- one story depends on another one', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    assert.equal(story1.dependances.length, 0, 'story1 has any dependance');
+    story2.dependsOn(story1);
+    assert.ok(story1.endDate.getTime(), story2.startDate.getTime(), 'endDate of story1 comes before startDate of story2');
+    assert.equal(story1.dependances.length, 1, 'story1 has one dependance');
+    assert.equal(story1.dependances[0], story2.id, 'story1 has story2 as dependance');
+});
+
+test('dependsOn() - Draw the edge between nodes as expected', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    var obj = {};
+    story2.dependsOn(story1, obj);
+    assert.equal(obj.shape.type, 'link', 'type is a link');
+});
+
+test('dependsOn() - one story has multiple successor stories', assert => {
+    var props = {title: 'titre', type: 'test', endDate: new Date('12-01-2023')};
+    var story1 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    var props = {title: 'titre', type: 'code', startDate: new Date('14-01-2023')};
+    var story3 = new Story(props);
+    assert.equal(story1.dependances.length, 0, 'story1 has any dependance');
+    story2.dependsOn(story1);
+    story3.dependsOn(story1);
+    assert.ok(story1.endDate.getTime(), story2.startDate.getTime(), 'endDate of story1 comes before startDate of story2');
+    assert.ok(story1.endDate.getTime(), story3.startDate.getTime(), 'endDate of story1 comes before startDate of story3');
+    assert.equal(story1.dependances.length, 2, 'story1 has one dependance');
+    assert.equal(story1.dependances[0], story2.id, 'story1 has story2 as dependance');
+    assert.equal(story1.dependances[1], story3.id, 'story1 has story3 as dependance');
+});
+
+test('dependsOn() - one story has multiple predecessor stories', assert => {
+    var props = {title: 'titre', type: 'code', endDate: new Date('13-01-2023')};
+    var story2 = new Story(props);
+    var props = {title: 'titre', type: 'code', endDate: new Date('14-01-2023')};
+    var story3 = new Story(props);
+    var props = {title: 'titre', type: 'test', startDate: new Date('16-01-2023')};
+    var story1 = new Story(props);
+    story1.dependsOn(story2);
+    story1.dependsOn(story3);
+    assert.equal(story2.dependances.length, 1, 'story2 has a dependance');
+    assert.equal(story3.dependances.length, 1, 'story3 has a dependance');
+    assert.equal(story2.dependances[0], story1.id, 'story2 has story1 as dependance');
+    assert.equal(story3.dependances[0], story1.id, 'story3 has story1 as dependance');
 });

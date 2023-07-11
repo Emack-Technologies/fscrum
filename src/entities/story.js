@@ -9,7 +9,7 @@ var getValue = (id, title, startDate, endDate, status, dependances) => {
     ];
 };
 
-const story_t = [
+const story_type = [
     "technical",
     "design_review",
     "code_review",
@@ -22,7 +22,7 @@ const story_t = [
     "epique"
 ];
 
-const status_t = ['todo', 'done', 'in_review', 'in_progress'];
+const status_type = ['todo', 'done', 'in_review', 'in_progress'];
 
 
 class Story{
@@ -30,9 +30,9 @@ class Story{
     #title = 'titre';
     #startDate = new Date("2023-04-23");
     #endDate = new Date("3000-05-12");
-    #dependances = [1, 2, 3];
+    #dependances = [];
     #status = "in_progress";
-    #type = "epique"
+    #type = "test"
     
     constructor(props){
         if (!props)
@@ -40,6 +40,12 @@ class Story{
         
         if (Object.keys(props).includes('title') && (typeof props.title != 'string' || props.title == ''))
             throw new Error('Title should be a none-empty string');
+
+        if (props.type == undefined)
+            throw new Error('Type is required');
+        
+        if (props && !story_type.includes(props.type))
+            throw new Error("this type of story is not included");
 
         if (!props.id)
             props.id = 0;
@@ -52,9 +58,9 @@ class Story{
 
         this.#id = aya.id();
         this.#title = props.title;
+        this.#type = props.type;
         this.#startDate = props.startDate;
         this.#endDate = props.endDate;
-        this.#dependances = [];
         this.shape = aya.rectangle(10, 20, R_WIDTH, R_HEIGHT);
         this.shape.setStyles({fill: R_FILL, stroke: R_STROKE, strokewidth: R_STROKEWIDTH});
 
@@ -63,7 +69,7 @@ class Story{
         });
 
         this.shape.addEvent("mouseleave", ()=> {
-            mouseleavecb(this.shape);
+            mouseleavecb(this);
         });
     }
 
@@ -100,14 +106,8 @@ class Story{
      * setters
      */
 
-    set type(value){
-        if (value && !story_t.includes(value))
-            throw new Error("this type of story is not included");
-        this.#type = value;
-    }
-
     set status(value){
-        if (value && !status_t.includes(value))
+        if (value && !status_type.includes(value))
             throw new Error("this type of status is not allowed");
         this.#status = value;
     }
@@ -123,31 +123,58 @@ class Story{
     set endDate(value){
         this.#endDate = value;
     };
+
+    dependsOn(story1, obj = {}){
+        if (this.#startDate.getTime() <= story1.endDate.getTime())
+            throw new Error('Dates should be differents');
+        story1.dependances.push(this.#id);
+        obj.shape = aya.link(story1.shape.uuid, this.shape.uuid, {end_start: null, end_dest: 'triangle'});
+    };
 }
 
 var mouseovercb = (story) => {
-    console.log(story);
-    var startDate = new Date(story.startDate).toString().split(" ");
-    console.log(startDate);
-    var endDate = new Date(story.endDate).toString().split(" ");
-    var values = getValue(story.id, story.title, startDate, endDate, story.status, story.dependances);
-    var box = aya.rectangle(story.shape.x, story.shape.y + story.shape.height + 40, B_WIDTH, B_HEIGHT, false);
-    var text;
-    story.shape.addChild(box, {x:0, y:0}, {x:story.shape.x, y:story.shape.y});
-    box.setStyles({fill: B_FILL, stroke: B_STROKE, strokewidth:  B_STROKEWIDTH});
-    for(var i=0; i<=5; i++){
-        var line = aya.line(box.x, box.y + box.height/6 * (i+1), box.x + box.width, box.y + box.height/6 * (i+1));
-        box.addChild(line);
-        text = aya.text(line.x + DELTA_X, line.y - DELTA_Y, values[i], 0, line.dest_x, line.dest_y);
-        line.addChild(text);
-    };
+    if(story.shape.children.length == 0){
+        var startDate = new Date(story.startDate).toString().split(" ");
+        var endDate = new Date(story.endDate).toString().split(" ");
+        var values = getValue(story.id, story.title, startDate, endDate, story.status, story.dependances);
+        var box = aya.rectangle(story.shape.x, story.shape.y + story.shape.height + 40, B_WIDTH, B_HEIGHT, false);
+        var text;
+        story.shape.addChild(box, {x:0, y:0}, {x:story.shape.x, y:story.shape.y});       
+        box.setStyles({fill: B_FILL, stroke: B_STROKE, strokewidth:  B_STROKEWIDTH});
+        for(var i=0; i<=5; i++){
+            var line = aya.line(box.x, box.y + box.height/6 * (i+1), box.x + box.width, box.y + box.height/6 * (i+1), false);
+            box.addChild(line);
+            text = aya.text(line.x + DELTA_X, line.y - DELTA_Y, values[i], 0, line.dest_x, line.dest_y, false);
+            line.addChild(text);
+        };
+        return {
+            box: box
+        };
+    } 
+    else {
+        var box = story.shape.children[0].child;
+        box.c_svg.setAttribute("visibility", "visible");
+        box.children.map(({child}) => {
+            var line = child;
+            line.c_svg.setAttribute("visibility", "visible");
+            line.children.map(({child}) => {
+                var text = child;
+                text.c_svg.setAttribute("visibility", "visible");
+            });
+        });
+    }
 
-    return {
-        box: box
-    };
 };
 
-var mouseleavecb = (shape) => {
-    shape.children[0].child.remove();
-    shape.children = [];
+var mouseleavecb = (story) => {
+    var box = story.shape.children[0].child;
+    box.c_svg.setAttribute("visibility", "hidden");
+    box.children.map(({child}) => {
+        var line = child;
+        line.c_svg.setAttribute("visibility", "hidden");
+        line.children.map(({child}) => {
+            var text = child;
+            text.c_svg.setAttribute("visibility", "hidden");
+        });
+    });
 };

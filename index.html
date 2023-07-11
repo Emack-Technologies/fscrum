@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/ayajs@2.0.7/build/style.css"
-    />
-    <!-- <script type="application/javascript"  src="aya.js"></script> -->
-    <script
-      type="application/javascript"
-      src="https://cdn.jsdelivr.net/npm/ayajs@2.0.7/build/aya.js"
-    ></script>
-    <title>fscrum</title>
-  </head>
 
-  <body>
-    <script>
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="initial-scale=1.0">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ayajs@2.0.7/build/style.css">
+   <!-- <script type="application/javascript"  src="aya.js"></script> -->
+   <script type="application/javascript"  src="https://cdn.jsdelivr.net/npm/ayajs@2.0.7/build/aya.js"></script>
+   <title>fscrum</title>
+</head>
+
+<body >
+
+   <script>
       var aya = aya.init();
-      console.log(aya);
-      //   aya.config.text.textanchor = "start";
-      //   aya.config.text.startoffset = "0%";
+      aya.config.text.textanchor = "start";
+      aya.config.text.startoffset = "0%";
       document.body.append(aya.svg);
-    </script>
-    <script src="src/entities/release.js"></script>
-    <script>
+   </script>
+   <script src="constants.js"></script>
+   <script src="src/entities/story.js"></script>
+   <script>
       aya.grid(aya.svg);
-      // var rec = aya.rectangle(100, 100, 100, 100);
-      var c = new Release({
-        version: "1.0.1",
-        name: "test",
-        startDate: "12-01-2015",
-        endDate: "12-02-15"
-      });
-      // write your code here
-    </script>
-  </body>
+      var story1 = new Story({title: 'titre', startDate: new Date('10-01-2023'), endDate: new Date('12-01-2023'), type: 'test'});
+      var story2 = new Story({title: 'titre', startDate: new Date('13-01-2023'), endDate: new Date('14-01-2023'), type: 'test'});
+      var story3 = new Story({title: 'titre', startDate: new Date('15-01-2023'), endDate: new Date('16-01-2023'), type: 'test'});
+      story1.dependsOn(story2);
+      story1.dependsOn(story3);
+    //  var rec1 = aya.rectangle(100, 100, 100, 100);
+   //  var rec2 = aya.rectangle(400, 100, 100, 100);
+   //  var link = aya.link(rec1.uuid, rec2.uuid, {end_start: null, end_dest: 'triangle'});
+   //  rec2.addChild(rec1, {x:0, y:0}, {});
+   //  var txt = aya.text(rec1.x, rec1.y + rec1.height / 2, 'texte', 0, rec1.x + rec1.width, rec1.y, false);
+   //  rec1.addChild(txt, {x:0, y:0}, {x:rec2.x, y:rec2.y, angle:45});
+   // write your code here      
+   </script>
+</body>
 </html>

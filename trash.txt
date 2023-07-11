@@ -1,0 +1,7 @@
+// var shapeChild = aya.rectangle(10, 50, 250, 100, false);
+    // this.shape.addChild(shapeChild, {x:0, y:40}, {x:this.shape.x, y:this.shape.y});
+    // var txt = aya.text(shapeChild.x + 20, shapeChild.y + 55, 'Task send out interview schedule', 300, 0, 0, false);
+    // shapeChild.addChild(txt, {x:0, y:0}, null);
+    // txt.c_svg.setAttribute('font-size', '12px');
+    // var lineObject = aya.line(shapeChild.x + 15, shapeChild.y + 60, shapeChild.width - 10, shapeChild.y + 60, false);
+    // shapeChild.addChild(lineObject, {x:0, y:0}, null);
