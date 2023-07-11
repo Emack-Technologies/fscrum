@@ -76,6 +76,9 @@ var aya = {
                   delete Obj.events[event];
                },
                removeFromDOM(){},
+               removeBoxFromDOM(){},
+               makeHiddenVertex(){},
+               makeHiddenCpoints(){},
                draw(){
                   Obj.addEvent("mousedown", ()=>{});
                   Obj.addEvent("mouseover", ()=>{});

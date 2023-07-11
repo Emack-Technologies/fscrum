@@ -15,3 +15,6 @@ const B_STROKEWIDTH = "2px";
 
 const DELTA_X = 5;
 const DELTA_Y = 5;
+const IMG_W = 25;
+const IMG_H = 25;
+const PATH = "docs/images/sprint.png";
